@@ -1,0 +1,6 @@
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\bin\Debug\ENTIDADES.dll
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\bin\Debug\ENTIDADES.pdb
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\obj\Debug\ENTIDADES.csproj.AssemblyReference.cache
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\obj\Debug\ENTIDADES.csproj.CoreCompileInputs.cache
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\obj\Debug\ENTIDADES.dll
+D:\Universidad\Semestre 6\Ingeniería de Software\Programa\Restaurante\ENTIDADES\obj\Debug\ENTIDADES.pdb

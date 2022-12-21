@@ -1,0 +1,120 @@
+create table restauranteinventory;
+
+use restauranteinventory;
+
+CREATE TABLE `movimientos` (
+  `idMovimientos` int(11) NOT NULL AUTO_INCREMENT,
+  `Ingreso` varchar(100) DEFAULT NULL,
+  `FechaMovimiento` varchar(100) DEFAULT NULL,
+  `FKID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idMovimientos`),
+  KEY `FKID_idx` (`FKID`),
+  CONSTRAINT `FKID` FOREIGN KEY (`FKID`) REFERENCES `productos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1
+
+CREATE TABLE `productos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `CodigoBarras` int(11) DEFAULT NULL,
+  `Nombre` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(100) DEFAULT NULL,
+  `Cantidad` double DEFAULT NULL,
+  `FechaEntrada` varchar(100) DEFAULT NULL,
+  `FKNombreUsuario` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKNombreUsuario_idx` (`FKNombreUsuario`),
+  CONSTRAINT `FKNombreUsuario` FOREIGN KEY (`FKNombreUsuario`) REFERENCES `usuario` (`NombreUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1
+
+CREATE TABLE `retiros` (
+  `idRetiros` int(11) NOT NULL AUTO_INCREMENT,
+  `Retiros` double DEFAULT NULL,
+  `FechaMovimiento` varchar(100) DEFAULT NULL,
+  `FKIDProd` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idRetiros`),
+  KEY `FKID_idx` (`FKIDProd`),
+  CONSTRAINT `FKIDProd` FOREIGN KEY (`FKIDProd`) REFERENCES `productos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1
+
+CREATE TABLE `usuario` (
+  `NombreUsuario` varchar(50) NOT NULL,
+  `Contrasena` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`NombreUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+//Stored Procedures
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_AgregarMovimiento`(
+in p_idMovimientos int,
+in p_Ingreso varchar(100),
+in p_FechaMovimiento varchar(100),
+in p_FKID int)
+BEGIN
+	declare existe int default 0;
+    select count(*) from movimientos where idMovimientos = p_idMovimientos into existe;
+    if existe < 1 then
+		insert into movimientos values(null,p_Ingreso, p_FechaMovimiento, p_FKID);
+	end if;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_AgregarProducto`(
+in p_id int,
+in p_CodigoBarras int,
+in p_Nombre varchar(100),
+in p_Descripcion varchar(100),
+in p_Cantidad double,
+in p_FechaEntrada varchar(100),
+in p_FKNombreUsuario varchar(50))
+BEGIN
+	declare existe int default 0;
+    select count(*) from productos where id = p_id into existe;
+    if existe < 1 then
+		insert into productos values(null,p_CodigoBarras, p_Nombre, p_Descripcion, p_Cantidad, p_FechaEntrada, p_FKNombreUsuario);
+	end if;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_AgregarRetiro`(
+in p_idRetiros int,
+in p_Retiros varchar(100),
+in p_FechaMovimiento varchar(100),
+in p_FKIDProd int)
+BEGIN
+	declare existe int default 0;
+    select count(*) from retiros where idRetiros = p_idRetiros into existe;
+    if existe < 1 then
+		insert into retiros values(null,p_Retiros, p_FechaMovimiento, p_FKIDProd);
+	end if;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_EliminarProducto`(
+in p_CodigoBarras int)
+BEGIN
+	delete from productos where CodigoBarras = p_CodigoBarras;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_ModificarCantidad`(
+in p_id int,
+in p_Cantidad double)
+BEGIN
+	update productos set
+    Cantidad = p_Cantidad
+    where id = p_id;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_ModificarProductos`(
+in p_id int,
+in p_CodigoBarras int,
+in p_Nombre varchar(100),
+in p_Descripcion varchar(100),
+in p_Cantidad double,
+in p_FechaEntrada varchar(100),
+in p_FKNombreUsuario varchar(50))
+BEGIN
+	update productos set
+    CodigoBarras = p_CodigoBarras,
+    Nombre = p_Nombre,
+    Descripcion = p_Descripcion,
+    Cantidad = p_Cantidad,
+    FechaEntrada = p_FechaEntrada,
+    FKNombreUsuario = p_FKNombreUsuario
+    where id = p_id;
+END
